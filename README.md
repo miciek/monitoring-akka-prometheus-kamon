@@ -1,8 +1,8 @@
-# akka-sharding-example
+# Monitoring Akka Applications with Kamon
 
-A simple implementation of akka sharding. This is a simulation of [Conveyor Sorting Subsystem](http://i.imgur.com/mctb4HC.gifv).
-
-This repository serves as a support for my live-coding talk. You can look at slides on [slideshare](http://www.slideshare.net/miciek/sane-sharding-with-akka-cluster-53948027).
+This project serves as a playground for trying out monitoring options for both single noded and clustered Akka applications.
+ 
+The application itself is a simulation of [Conveyor Sorting Subsystem](http://i.imgur.com/mctb4HC.gifv) and its original code (without monitoring and using older Akka version) can be found in [akka-sharding-example repository](https://github.com/miciek/akka-sharding-example). 
 
 ## Benchmarking
 You can test both applications on your local machine by using included `resources/URLs.txt` file and the following command:
@@ -37,6 +37,3 @@ This will set up a round-robing load balancer with frontend on port `8000` and b
 cat src/main/resources/shardedURLs.txt | parallel -j 5 'ab -ql -n 2000 -c 1 -k {}' | grep 'Requests per second'
 ```
 
-## Notes
-- Please note that Akka's parallelism in this project is capped in order to test being low on resources. Look at both `application.conf` and `sharded.conf`.
-- The project uses a very unorthodox shard resolution function, which can return only two values (`0` or `1`). It is done purely for demonstration purposes. If you want to test scalability of more than 2 nodes, please change this function accordingly.
