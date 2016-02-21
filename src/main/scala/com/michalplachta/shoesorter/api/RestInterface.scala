@@ -1,19 +1,24 @@
 package com.michalplachta.shoesorter.api
 
-import akka.actor.{Actor, ActorLogging, ActorRef}
-import akka.io.IO
+import akka.actor.{ActorRef, ActorSystem}
+import akka.event.slf4j.SLF4JLogging
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
+import akka.stream.ActorMaterializer
+import akka.util.Timeout
 import com.michalplachta.shoesorter.Domain.{Container, Junction}
-import com.michalplachta.shoesorter.Messages._
-import spray.can.Http
-import spray.httpx.SprayJsonSupport._
-import spray.routing._
+import com.michalplachta.shoesorter.Messages.{Go, WhereShouldIGo}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
-class RestInterface(decider: ActorRef, exposedPort: Int) extends Actor with HttpServiceBase with ActorLogging {
-  val route: Route = {
+class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorSystem) extends SLF4JLogging {
+  implicit val timeout = Timeout(5 seconds)
+  implicit val materializer = ActorMaterializer()
+
+  val route =
     path("junctions" / IntNumber / "decisionForContainer" / IntNumber) { (junctionId, containerId) =>
       get {
         complete {
@@ -24,10 +29,14 @@ class RestInterface(decider: ActorRef, exposedPort: Int) extends Actor with Http
         }
       }
     }
+
+  val binding = Http().bindAndHandle(route, "0.0.0.0", exposedPort)
+  binding.onSuccess {
+    case binding =>
+      log.info("Successfully started the HTTP server on port {}", exposedPort)
   }
-
-  def receive = runRoute(route)
-
-  implicit val system = context.system
-  IO(Http) ! Http.Bind(self, interface = "0.0.0.0", port = exposedPort)
+  binding.onFailure {
+    case binding =>
+      log.error("Server not started")
+  }
 }

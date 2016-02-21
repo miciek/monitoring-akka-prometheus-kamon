@@ -12,7 +12,7 @@ object SingleNodeApp extends App {
   implicit val system = ActorSystem(config getString "application.name")
 
   val guardian = system.actorOf(Props[DecidersGuardian], "guardian")
-  system.actorOf(Props(classOf[RestInterface], guardian, config getInt "application.exposed-port"), "rest")
+  new RestInterface(guardian, config getInt "application.exposed-port")
 
   system.registerOnTermination {
     Kamon.shutdown()
