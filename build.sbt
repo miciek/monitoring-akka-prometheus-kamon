@@ -42,6 +42,6 @@ libraryDependencies ++= {
 
 addCommandAlias("runSingle", "runMain com.michalplachta.shoesorter.api.SingleNodeApp")
 
-addCommandAlias("runShard", "runMain com.michalplachta.shoesorter.api.ShardedApp")
+addCommandAlias("runSharded", "runMain com.michalplachta.shoesorter.api.ShardedApp")
 
 fork in run := true
