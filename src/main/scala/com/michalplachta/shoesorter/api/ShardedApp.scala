@@ -7,7 +7,7 @@ import com.typesafe.config.ConfigFactory
 
 object ShardedApp extends App {
   val config = ConfigFactory.load("sharded")
-  implicit val system = ActorSystem(config getString "clustering.cluster.name", config)
+  implicit val system = ActorSystem(config getString "application.name", config)
 
   ClusterSharding(system).start(
     typeName = SortingDecider.shardName,

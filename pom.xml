@@ -17,6 +17,7 @@
         <logback.version>1.1.2</logback.version>
         <junit.version>4.11</junit.version>
         <scalatest.version>2.2.3</scalatest.version>
+        <kamon.version>0.5.2</kamon.version>
         <maven-scala-plugin.version>2.15.2</maven-scala-plugin.version>
         <maven-shade-plugin.version>2.3</maven-shade-plugin.version>
         <scalatest-maven-plugin.version>1.0</scalatest-maven-plugin.version>
@@ -97,6 +98,31 @@
             <version>${logback.version}</version>
         </dependency>
         <dependency>
+          <groupId>io.kamon</groupId>
+            <artifactId>kamon-scala_2.11</artifactId>
+            <version>${kamon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.kamon</groupId>
+            <artifactId>kamon-log-reporter_2.11</artifactId>
+            <version>${kamon.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>io.kamon</groupId>
+            <artifactId>kamon-akka_2.11</artifactId>
+            <version>${kamon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.kamon</groupId>
+            <artifactId>kamon-akka-remote_2.11</artifactId>
+            <version>${kamon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.8</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
@@ -168,8 +194,11 @@
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <manifestEntries>
-                                <Main-Class>com.michalplachta.shoesorter.api.ShardedApp</Main-Class>
+                                <Main-Class>com.michalplachta.shoesorter.api.SingleNodeApp</Main-Class>
                             </manifestEntries>
+                        </transformer>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.XmlAppendingTransformer">
+                            <resource>META-INF/aop.xml</resource>
                         </transformer>
                     </transformers>
                 </configuration>
