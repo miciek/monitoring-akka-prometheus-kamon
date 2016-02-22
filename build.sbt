@@ -44,4 +44,9 @@ addCommandAlias("runSingle", "runMain com.michalplachta.shoesorter.api.SingleNod
 
 addCommandAlias("runSharded", "runMain com.michalplachta.shoesorter.api.ShardedApp")
 
+// AspectJ Weaver is required by Kamon Scala/Akka
+aspectjSettings
+
+javaOptions in run <++= AspectjKeys.weaverOptions in Aspectj
+
 fork in run := true
