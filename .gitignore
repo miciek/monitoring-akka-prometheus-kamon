@@ -6,8 +6,8 @@ target
 .project
 .settings
 .DS_Store
-out*g
 log
+*.log
 .cache
 journal
 snapshots

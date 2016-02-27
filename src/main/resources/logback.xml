@@ -1,23 +1,24 @@
 <configuration>
-
+    <conversionRule conversionWord="traceToken" converterClass="kamon.trace.logging.LogbackTraceTokenConverter"/>
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <!-- See http://logback.qos.ch/manual/layouts.html -->
-            <!-- See http://doc.akka.io/docs/akka/2.0/scala/logging.html -->
-            <pattern>%date{ISO8601} %-5level %X{akkaSource} %logger{36} - %msg%n</pattern>
+            <pattern>%date{ISO8601} [%-5level][%X{akkaSource}][%traceToken] %logger{10} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>app.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%date{ISO8601} [%-5level][%X{akkaSource}][%traceToken] %logger{10} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <logger name="com.mlh.clustering" level="debug" additivity="false">
-        <appender-ref ref="console" />
-    </logger>
-
     <logger name="akka" level="info" additivity="false">
-        <appender-ref ref="console" />
+        <appender-ref ref="console"/>
     </logger>
 
-    <root level="info">
+    <root level="debug">
         <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
     </root>
-
 </configuration>

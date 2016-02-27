@@ -10,6 +10,7 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import com.michalplachta.shoesorter.Domain.{Container, Junction}
 import com.michalplachta.shoesorter.Messages.{Go, WhereShouldIGo}
+import kamon.trace.Tracer
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -22,10 +23,12 @@ class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorS
     path("junctions" / IntNumber / "decisionForContainer" / IntNumber) { (junctionId, containerId) =>
       get {
         complete {
-          log.info(s"Request for junction $junctionId and container $containerId")
           val junction = Junction(junctionId)
           val container = Container(containerId)
-          decider.ask(WhereShouldIGo(junction, container))(5 seconds).mapTo[Go]
+          Tracer.withNewContext("sample-trace") {
+            log.info(s"Request for junction $junctionId and container $containerId")
+            decider.ask(WhereShouldIGo(junction, container))(5 seconds).mapTo[Go]
+          }
         }
       }
     }

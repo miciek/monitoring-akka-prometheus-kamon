@@ -1,6 +1,6 @@
 package com.michalplachta.shoesorter
 
-import akka.actor.{Actor, Props}
+import akka.actor.{ActorLogging, Actor, Props}
 import akka.cluster.sharding.ShardRegion
 import com.michalplachta.shoesorter.Messages.{Go, WhereShouldIGo}
 
@@ -20,10 +20,11 @@ object SortingDecider {
   }
 }
 
-class SortingDecider extends Actor {
+class SortingDecider extends Actor with ActorLogging {
   def receive = {
     case WhereShouldIGo(junction, container) =>
       val decision = Decisions.whereShouldContainerGo(junction, container)
+      log.debug(s"Decision: $decision")
       sender ! Go(decision)
   }
 }
