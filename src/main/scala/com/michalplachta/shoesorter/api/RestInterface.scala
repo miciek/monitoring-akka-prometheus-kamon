@@ -25,7 +25,7 @@ class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorS
         complete {
           val junction = Junction(junctionId)
           val container = Container(containerId)
-          Tracer.withNewContext("sample-trace") {
+          Tracer.withNewContext("DecisionRequest", autoFinish = true) {
             log.info(s"Request for junction $junctionId and container $containerId")
             decider.ask(WhereShouldIGo(junction, container))(5 seconds).mapTo[Go]
           }
