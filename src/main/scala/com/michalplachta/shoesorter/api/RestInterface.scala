@@ -16,7 +16,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorSystem) extends SLF4JLogging {
-  implicit val timeout = Timeout(5 seconds)
+  implicit val timeout = Timeout(5.seconds)
   implicit val materializer = ActorMaterializer()
 
   val route =
@@ -27,7 +27,7 @@ class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorS
           val container = Container(containerId)
           Tracer.withNewContext("DecisionRequest", autoFinish = true) {
             log.info(s"Request for junction $junctionId and container $containerId")
-            decider.ask(WhereShouldIGo(junction, container))(5 seconds).mapTo[Go]
+            decider.ask(WhereShouldIGo(junction, container))(5.seconds).mapTo[Go]
           }
         }
       }
@@ -35,11 +35,9 @@ class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorS
 
   val binding = Http().bindAndHandle(route, "0.0.0.0", exposedPort)
   binding.onSuccess {
-    case binding =>
-      log.info("Successfully started the HTTP server on port {}", exposedPort)
+    case _ => log.info("Successfully started the HTTP server on port {}", exposedPort)
   }
   binding.onFailure {
-    case binding =>
-      log.error("Server not started")
+    case _ => log.error("Server not started")
   }
 }
