@@ -10,6 +10,7 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import com.michalplachta.shoesorter.Domain.{Container, Junction}
 import com.michalplachta.shoesorter.Messages.{Go, WhereShouldIGo}
+import kamon.Kamon
 import kamon.trace.Tracer
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -26,6 +27,10 @@ class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorS
           val junction = Junction(junctionId)
           val container = Container(containerId)
           Tracer.withNewContext("DecisionRequest", autoFinish = true) {
+            Kamon.metrics.counter(
+              "api_http_requests_total",
+              Map("junctionId" -> junctionId.toString, "containerId" -> containerId.toString)
+            ).increment()
             log.info(s"Request for junction $junctionId and container $containerId")
             decider.ask(WhereShouldIGo(junction, container))(5.seconds).mapTo[Go]
           }
