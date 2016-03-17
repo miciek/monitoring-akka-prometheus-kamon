@@ -1,0 +1,4 @@
+scrape_configs:
+  - job_name: example
+    target_groups:
+      - targets: ['10.0.2.2:8888']

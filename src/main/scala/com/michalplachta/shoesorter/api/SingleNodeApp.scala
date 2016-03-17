@@ -13,6 +13,7 @@ object SingleNodeApp extends App {
 
   val guardian = system.actorOf(Props[DecidersGuardian], "guardian")
   new RestInterface(guardian, config getInt "application.exposed-port")
+  PrometheusService.start()
 
   system.registerOnTermination {
     Kamon.shutdown()
