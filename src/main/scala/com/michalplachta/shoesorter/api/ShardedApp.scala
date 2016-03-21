@@ -4,10 +4,15 @@ import akka.actor.{ActorSystem, Props}
 import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings}
 import com.michalplachta.shoesorter.SortingDecider
 import com.typesafe.config.ConfigFactory
+import kamon.Kamon
 
 object ShardedApp extends App {
+  Kamon.start()
+
   val config = ConfigFactory.load("sharded")
   implicit val system = ActorSystem(config getString "application.name", config)
+
+  PrometheusService.start()
 
   ClusterSharding(system).start(
     typeName = SortingDecider.shardName,

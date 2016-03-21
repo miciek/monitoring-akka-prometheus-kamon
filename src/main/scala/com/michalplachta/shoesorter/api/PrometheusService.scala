@@ -6,10 +6,8 @@ import kamon.Kamon
 import spray.routing.SimpleRoutingApp
 
 object PrometheusService extends SimpleRoutingApp {
-  def start(): Unit = {
+  def start()(implicit system: ActorSystem): Unit = {
     Kamon.start()
-
-    implicit val actorSystem = ActorSystem()
 
     startServer("localhost", 8888) {
       path("metrics") {
