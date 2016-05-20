@@ -9,8 +9,8 @@ scalaVersion := "2.11.8"
 resolvers += Resolver.jcenterRepo
 
 libraryDependencies ++= {
-  val akkaVersion = "2.4.2"
-  val kamonVersion = "0.5.2"
+  val akkaVersion = "2.4.4"
+  val kamonVersion = "0.6.0"
   val typesafeConfigVersion = "1.3.0"
   val sprayVersion = "1.3.3"
   val sprayJsonVersion = "1.3.1"
