@@ -9,7 +9,7 @@ object PrometheusService extends SimpleRoutingApp {
   def start()(implicit system: ActorSystem): Unit = {
     Kamon.start()
 
-    startServer("localhost", 8888) {
+    startServer("0.0.0.0", 8888) {
       path("metrics") {
         Kamon(Prometheus).route
       }
