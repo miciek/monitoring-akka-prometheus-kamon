@@ -5,7 +5,7 @@ if [ "$(uname)" == "Darwin" ]; then
     app_host=$(ifconfig | grep -oE "inet \d+.\d+.\d+.\d+" | cut -c 6- | grep "192" | head -n 1)
 fi
 
-mkdir target
+mkdir target %> /dev/null
 cp src/main/resources/prometheus.yml target/
 sed -i '' "s/HOST/$app_host/; s/PORT/$app_port/" target/prometheus.yml
 
