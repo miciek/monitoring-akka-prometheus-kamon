@@ -10,7 +10,10 @@ object SingleNodeApp extends App {
 
   val config = ConfigFactory.load()
   implicit val system = ActorSystem(config getString "application.name")
-  PrometheusService.start(config getInt "application.metrics-port")
+
+  if(config getBoolean "metrics.enabled") {
+    PrometheusService.start(config getInt "metrics.exposed-port")
+  }
 
   val guardian = system.actorOf(Props[DecidersGuardian], "guardian")
   new RestInterface(guardian, config getInt "application.exposed-port")

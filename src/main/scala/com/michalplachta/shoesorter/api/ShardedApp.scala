@@ -12,7 +12,9 @@ object ShardedApp extends App {
   val config = ConfigFactory.load("sharded")
   implicit val system = ActorSystem(config getString "application.name", config)
 
-  PrometheusService.start(config getInt "application.metrics-port")
+  if(config getBoolean "metrics.enabled") {
+    PrometheusService.start(config getInt "metrics.exposed-port")
+  }
 
   ClusterSharding(system).start(
     typeName = SortingDecider.shardName,

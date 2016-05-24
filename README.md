@@ -28,7 +28,7 @@ cat src/main/resources/URLs.txt | parallel -j 5 'ab -ql -n 2000 -c 1 -k {}' | gr
 You can run two nodes by executing:
 
 - first node: `sbt runSharded`
-- second node: `sbt '; set javaOptions += "-Dclustering.port=2552" ; set javaOptions += "-Dapplication.exposed-port=8081" ; runSharded'`
+- second node: `sbt '; set javaOptions += "-Dclustering.port=2552" ; set javaOptions += "-Dapplication.exposed-port=8081" ; set javaOptions += "-Dmetrics.enabled=false" ; runSharded'`
 
 We want to balance the traffic between the two nodes. Simple configuration for haproxy daemon can be found in resources dir. Run it with:
 `haproxy -f src/main/resources/haproxy.conf`
