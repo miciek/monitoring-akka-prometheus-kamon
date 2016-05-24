@@ -24,16 +24,16 @@ class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorS
     path("junctions" / IntNumber / "decisionForContainer" / IntNumber) { (junctionId, containerId) =>
       get {
         complete {
+          Tracer.setCurrentContext(Kamon.tracer.newContext("DecisionRequest"))
           val junction = Junction(junctionId)
           val container = Container(containerId)
-          Tracer.withNewContext("DecisionRequest", autoFinish = true) {
-            Kamon.metrics.counter(
-              "api_http_requests_total",
-              Map("junctionId" -> junctionId.toString, "containerId" -> containerId.toString)
-            ).increment()
-            log.info(s"Request for junction $junctionId and container $containerId")
-            decider.ask(WhereShouldIGo(junction, container))(5.seconds).mapTo[Go]
-          }
+          Kamon.metrics.counter(
+            "api_http_requests_total",
+            Map("junctionId" -> junctionId.toString, "containerId" -> containerId.toString)
+          ).increment()
+
+          log.info(s"Request for junction $junctionId and container $containerId")
+          decider.ask(WhereShouldIGo(junction, container))(5.seconds).mapTo[Go]
         }
       }
     }

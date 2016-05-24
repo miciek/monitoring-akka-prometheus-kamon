@@ -8,9 +8,11 @@ scalaVersion := "2.11.8"
 
 resolvers += Resolver.jcenterRepo
 
+resolvers += "Kamon Repository Snapshots" at "http://snapshots.kamon.io"
+
 libraryDependencies ++= {
   val akkaVersion = "2.4.4"
-  val kamonVersion = "0.5.2"
+  val kamonVersion = "0.6.2-b10b1cf2013460c791d5e3f7600fc654145f3d4e"
   val typesafeConfigVersion = "1.3.0"
   val sprayVersion = "1.3.3"
   val sprayJsonVersion = "1.3.1"
@@ -40,7 +42,8 @@ libraryDependencies ++= {
     "io.kamon" %% "kamon-core" % kamonVersion,
     "io.kamon" %% "kamon-scala" % kamonVersion,
     "io.kamon" %% "kamon-akka" % kamonVersion,
-//    "io.kamon" %% "kamon-log-reporter" % kamonVersion,
+    "io.kamon" %% "kamon-akka-remote_akka-2.4" % kamonVersion,
+    // "io.kamon" %% "kamon-log-reporter" % kamonVersion,
     "com.monsanto.arch" %% "kamon-prometheus" % "0.1.2",
     // TESTING
     "com.typesafe.akka" %% "akka-http-testkit" % akkaVersion % Test,

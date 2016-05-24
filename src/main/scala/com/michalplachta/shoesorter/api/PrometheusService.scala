@@ -7,12 +7,11 @@ import spray.routing.SimpleRoutingApp
 
 object PrometheusService extends SimpleRoutingApp {
   def start(exposedPort: Int)(implicit system: ActorSystem): Unit = {
-    Kamon.start()
-
-    startServer("0.0.0.0", exposedPort) {
-      path("metrics") {
-        Kamon(Prometheus).route
-      }
-    }
+    // TODO: kamon-prometheus is not compatible with kamon 0.6 yet
+    //    startServer("0.0.0.0", exposedPort) {
+    //      path("metrics") {
+    //        Kamon(Prometheus).route
+    //      }
+    //    }
   }
 }
