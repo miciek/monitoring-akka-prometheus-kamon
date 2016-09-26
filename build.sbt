@@ -44,7 +44,7 @@ libraryDependencies ++= {
     "io.kamon" %% "kamon-scala" % kamonVersion,
     "io.kamon" %% "kamon-akka" % kamonVersion,
     "io.kamon" %% "kamon-akka-remote_akka-2.4" % kamonVersion,
-    "com.monsanto.arch" %% "kamon-prometheus" % "0.2.0",
+    "com.monsanto.arch" %% "kamon-prometheus" % kamonPrometheusVersion,
     // TESTING
     "com.typesafe.akka" %% "akka-http-testkit" % akkaVersion % Test,
     "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
