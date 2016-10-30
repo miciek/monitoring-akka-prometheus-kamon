@@ -4,9 +4,8 @@ This project serves as a playground for trying out monitoring options for both s
  
 The application itself is a simulation of [Conveyor Sorting Subsystem](http://i.imgur.com/mctb4HC.gifv) and its original code (without monitoring and using older Akka version) can be found in [akka-sharding-example repository](https://github.com/miciek/akka-sharding-example). 
 
-## Running Prometheus
-This project uses [Prometheus](https://prometheus.io/) as monitoring solution. You can use [runPrometheus.sh](runPrometheus.sh) script that will run Prometheus Docker container with proper configuration.
-After running the script you should be able to access Prometheus instance at `<DOCKER MACHINE IP>:9090`. Prometheus will poll for metrics, but we need to run the app and generate HTTP requests first.
+## Running the application
+This project uses [Prometheus](https://prometheus.io/) as monitoring solution. You can run both the application (single noded) and Prometheus using Docker Compose that is included in the project. Execute `docker-compose up` and go to `localhost:9090` to see Prometheus GUI.
 
 ## Generating traffic
 We can generate lots of HTTP requests using these tools:
