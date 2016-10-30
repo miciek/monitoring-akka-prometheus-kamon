@@ -11,8 +11,8 @@ resolvers += Resolver.jcenterRepo
 resolvers += "Kamon Repository Snapshots" at "http://snapshots.kamon.io"
 
 libraryDependencies ++= {
-  val akkaVersion = "2.4.10"
-  val kamonVersion = "0.6.2"
+  val akkaVersion = "2.4.12"
+  val kamonVersion = "0.6.3"
   val kamonPrometheusVersion = "0.2.0"
   val typesafeConfigVersion = "1.3.0"
   val sprayVersion = "1.3.3"
