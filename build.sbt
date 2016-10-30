@@ -12,6 +12,7 @@ resolvers += "Kamon Repository Snapshots" at "http://snapshots.kamon.io"
 
 libraryDependencies ++= {
   val akkaVersion = "2.4.12"
+  val akkaHttpVersion = "2.4.11"
   val kamonVersion = "0.6.3"
   val kamonPrometheusVersion = "0.2.0"
   val typesafeConfigVersion = "1.3.0"
@@ -23,10 +24,9 @@ libraryDependencies ++= {
   Seq(
     "com.typesafe" % "config" % typesafeConfigVersion,
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
-    // STREAM
-    "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-    "com.typesafe.akka" %% "akka-http-core" % akkaVersion,
-    "com.typesafe.akka" %% "akka-http-spray-json-experimental" % akkaVersion,
+    // HTTP
+    "com.typesafe.akka" %% "akka-http-core" % akkaHttpVersion,
+    "com.typesafe.akka" %% "akka-http-spray-json-experimental" % akkaHttpVersion,
     // CLUSTER
     "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
     "com.typesafe.akka" %% "akka-cluster-sharding" % akkaVersion,
@@ -46,8 +46,7 @@ libraryDependencies ++= {
     "io.kamon" %% "kamon-akka-remote_akka-2.4" % kamonVersion,
     "com.monsanto.arch" %% "kamon-prometheus" % kamonPrometheusVersion,
     // TESTING
-    "com.typesafe.akka" %% "akka-http-testkit" % akkaVersion % Test,
-    "com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion % Test,
+    "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
     "org.scalatest" %% "scalatest" % scalaTestVersion % Test,
     "junit" % "junit" % junitVersion % Test
   )
