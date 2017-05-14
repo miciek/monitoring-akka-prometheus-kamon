@@ -1,4 +1,4 @@
-name := "monitoring-akka-streams-kamon"
+name := "monitoring-akka-prometheus-kamon"
 
 organization := "miciek"
 
@@ -7,8 +7,6 @@ version := "1.0-SNAPSHOT"
 scalaVersion := "2.11.9"
 
 resolvers += Resolver.jcenterRepo
-
-resolvers += "Kamon Repository Snapshots" at "http://snapshots.kamon.io"
 
 libraryDependencies ++= {
   val akkaVersion = "2.4.18"
@@ -54,4 +52,3 @@ aspectjSettings
 
 javaOptions in run <++= AspectjKeys.weaverOptions in Aspectj
 
-fork in run := true
