@@ -43,12 +43,25 @@ libraryDependencies ++= {
   )
 }
 
-addCommandAlias("runSingle", "runMain com.michalplachta.shoesorter.api.SingleNodeApp")
-
-addCommandAlias("runSharded", "runMain com.michalplachta.shoesorter.api.ShardedApp")
-
 // AspectJ Weaver is required by Kamon Scala/Akka
 aspectjSettings
 
 javaOptions in run <++= AspectjKeys.weaverOptions in Aspectj
 
+import scalariform.formatter.preferences._
+import com.typesafe.sbt.SbtScalariform
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys
+
+SbtScalariform.scalariformSettings
+
+ScalariformKeys.preferences := ScalariformKeys.preferences.value
+  .setPreference(AlignParameters, true)
+  .setPreference(AlignArguments, true)
+  .setPreference(AlignSingleLineCaseStatements, true)
+  .setPreference(DoubleIndentClassDeclaration, true)
+  .setPreference(DanglingCloseParenthesis, Preserve)
+  .setPreference(RewriteArrowSymbols, true)
+
+addCommandAlias("runSingle", "runMain com.michalplachta.shoesorter.api.SingleNodeApp")
+
+addCommandAlias("runSharded", "runMain com.michalplachta.shoesorter.api.ShardedApp")

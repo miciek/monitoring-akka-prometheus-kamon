@@ -1,7 +1,7 @@
 package com.michalplachta.shoesorter.api
 
-import akka.actor.{ActorSystem, Props}
-import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings}
+import akka.actor.{ ActorSystem, Props }
+import akka.cluster.sharding.{ ClusterSharding, ClusterShardingSettings }
 import com.michalplachta.shoesorter.SortingDecider
 import com.typesafe.config.ConfigFactory
 import kamon.Kamon
@@ -11,11 +11,11 @@ object ShardedApp extends App {
   implicit val system = ActorSystem(config getString "application.name", config)
 
   ClusterSharding(system).start(
-    typeName = SortingDecider.shardName,
-    entityProps = SortingDecider.props,
-    settings = ClusterShardingSettings(system),
+    typeName        = SortingDecider.shardName,
+    entityProps     = SortingDecider.props,
+    settings        = ClusterShardingSettings(system),
     extractEntityId = SortingDecider.extractEntityId,
-    extractShardId = SortingDecider.extractShardId
+    extractShardId  = SortingDecider.extractShardId
   )
 
   val guardian = ClusterSharding(system).shardRegion(SortingDecider.shardName)

@@ -1,6 +1,6 @@
 package com.michalplachta.shoesorter.api
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.{ ActorSystem, Props }
 import com.michalplachta.shoesorter.DecidersGuardian
 import com.typesafe.config.ConfigFactory
 import kamon.Kamon

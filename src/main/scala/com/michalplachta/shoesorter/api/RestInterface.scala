@@ -1,12 +1,12 @@
 package com.michalplachta.shoesorter.api
 
-import akka.actor.{ActorRef, ActorSystem}
+import akka.actor.{ ActorRef, ActorSystem }
 import akka.event.slf4j.SLF4JLogging
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import akka.http.scaladsl.server.{HttpApp, Route}
+import akka.http.scaladsl.server.{ HttpApp, Route }
 import akka.pattern.ask
-import com.michalplachta.shoesorter.Domain.{Container, Junction}
-import com.michalplachta.shoesorter.Messages.{Go, WhereShouldIGo}
+import com.michalplachta.shoesorter.Domain.{ Container, Junction }
+import com.michalplachta.shoesorter.Messages.{ Go, WhereShouldIGo }
 import com.monsanto.arch.kamon.prometheus.akka_http.AkkaHttpEndpoint
 import kamon.Kamon
 import kamon.trace.Tracer
@@ -16,7 +16,7 @@ import scala.concurrent.duration._
 class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorSystem) extends SLF4JLogging {
   object WebServer extends HttpApp {
     def route: Route =
-      path("junctions" / IntNumber / "decisionForContainer" / IntNumber) { (junctionId, containerId) =>
+      path("junctions" / IntNumber / "decisionForContainer" / IntNumber) { (junctionId, containerId) ⇒
         get {
           complete {
             Tracer.withNewContext("DecisionRequest") {
@@ -24,7 +24,7 @@ class RestInterface(decider: ActorRef, exposedPort: Int)(implicit system: ActorS
               val container = Container(containerId)
               Kamon.metrics.counter(
                 "api_http_requests_total",
-                Map("junctionId" -> junctionId.toString, "containerId" -> containerId.toString)
+                Map("junctionId" → junctionId.toString, "containerId" → containerId.toString)
               ).increment()
 
               log.info(s"Request for junction $junctionId and container $containerId")
