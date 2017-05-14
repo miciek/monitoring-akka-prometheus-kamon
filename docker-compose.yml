@@ -3,7 +3,7 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./src/main/resources/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports: 
       - "9090:9090"
     depends_on:
@@ -15,4 +15,3 @@ services:
       - .:/app
     ports:
       - "8080:8080"
-      - "8888:8888"
