@@ -6,6 +6,8 @@ version := "1.0-SNAPSHOT"
 
 scalaVersion := "2.11.9"
 
+mainClass in Compile := Some("com.michalplachta.shoesorter.api.SingleNodeApp")
+
 resolvers += Resolver.jcenterRepo
 
 libraryDependencies ++= {
@@ -35,6 +37,7 @@ libraryDependencies ++= {
     "io.kamon" %% "kamon-scala" % kamonVersion,
     "io.kamon" %% "kamon-akka" % kamonVersion,
     "io.kamon" %% "kamon-akka-remote_akka-2.4" % kamonVersion,
+    "io.kamon" %% "kamon-autoweave" % kamonVersion,
     "com.monsanto.arch" %% "kamon-prometheus" % kamonPrometheusVersion,
     // TESTING
     "com.typesafe.akka" %% "akka-http-testkit" % akkaHttpVersion % Test,
@@ -43,10 +46,35 @@ libraryDependencies ++= {
   )
 }
 
-// AspectJ Weaver is required by Kamon Scala/Akka
-aspectjSettings
+// Create a new MergeStrategy for aop.xml files
+val aopMerge = new sbtassembly.MergeStrategy {
+  val name = "aopMerge"
+  import scala.xml._
+  import scala.xml.dtd._
 
-javaOptions in run <++= AspectjKeys.weaverOptions in Aspectj
+  def apply(tempDir: File, path: String, files: Seq[File]): Either[String, Seq[(File, String)]] = {
+    val dt = DocType("aspectj", PublicID("-//AspectJ//DTD//EN", "http://www.eclipse.org/aspectj/dtd/aspectj.dtd"), Nil)
+    val file = MergeStrategy.createMergeTarget(tempDir, path)
+    val xmls: Seq[Elem] = files.map(XML.loadFile)
+    val aspectsChildren: Seq[Node] = xmls.flatMap(_ \\ "aspectj" \ "aspects" \ "_")
+    val weaverChildren: Seq[Node] = xmls.flatMap(_ \\ "aspectj" \ "weaver" \ "_")
+    val options: String = xmls.map(x => (x \\ "aspectj" \ "weaver" \ "@options").text).mkString(" ").trim
+    val weaverAttr = if (options.isEmpty) Null else new UnprefixedAttribute("options", options, Null)
+    val aspects = new Elem(null, "aspects", Null, TopScope, false, aspectsChildren: _*)
+    val weaver = new Elem(null, "weaver", weaverAttr, TopScope, false, weaverChildren: _*)
+    val aspectj = new Elem(null, "aspectj", Null, TopScope, false, aspects, weaver)
+    XML.save(file.toString, aspectj, "UTF-8", xmlDecl = false, dt)
+    IO.append(file, IO.Newline.getBytes(IO.defaultCharset))
+    Right(Seq(file -> path))
+  }
+}
+
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
+  case PathList("META-INF", "aop.xml") => aopMerge
+  case n if n.endsWith(".conf") => MergeStrategy.concat
+  case x => MergeStrategy.first
+}
 
 import scalariform.formatter.preferences._
 import com.typesafe.sbt.SbtScalariform
