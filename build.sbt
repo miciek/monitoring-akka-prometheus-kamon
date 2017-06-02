@@ -13,6 +13,7 @@ resolvers += Resolver.jcenterRepo
 libraryDependencies ++= {
   val akkaVersion = "2.4.18"
   val akkaHttpVersion = "10.0.6"
+  val aspectjweaverV = "1.8.10"
   val kamonVersion = "0.6.3"
   val kamonPrometheusVersion = "0.2.0"
   val typesafeConfigVersion = "1.3.1"
@@ -33,6 +34,7 @@ libraryDependencies ++= {
     "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
     "ch.qos.logback" % "logback-classic" % logbackVersion,
     // MONITORING
+    "org.aspectj" % "aspectjweaver" % aspectjweaverV,
     "io.kamon" %% "kamon-core" % kamonVersion,
     "io.kamon" %% "kamon-scala" % kamonVersion,
     "io.kamon" %% "kamon-akka" % kamonVersion,
@@ -45,6 +47,8 @@ libraryDependencies ++= {
     "junit" % "junit" % junitVersion % Test
   )
 }
+
+retrieveManaged := true
 
 // Create a new MergeStrategy for aop.xml files
 val aopMerge = new sbtassembly.MergeStrategy {
