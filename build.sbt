@@ -8,6 +8,8 @@ scalaVersion := "2.11.9"
 
 mainClass in Compile := Some("com.michalplachta.shoesorter.api.SingleNodeApp")
 
+enablePlugins(AssemblyPlugin)
+
 resolvers += Resolver.jcenterRepo
 
 libraryDependencies ++= {
