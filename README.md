@@ -19,7 +19,7 @@ We can generate lots of HTTP requests using these tools:
 - provided [URLs.txt](src/main/resources/URLs.txt) for single-noded app,
 - provided [shardedURLs.txt](src/main/resources/shardedURLs.txt) and [haproxy.conf](src/main/resources/haproxy.conf).
 
-You can install these tools manually or using [install_load_tests_tools.sh](intall_load_tests_tools.sh) script.
+You can install these tools manually or using [install_load_test_tools.sh](install_load_test_tools.sh) script.
 
 ### SingleNodedApp
 Just run `SingleNodedApp` from your IDE or `sbt runSingle` and then:
@@ -43,5 +43,5 @@ This will set up a round-robing load balancer with frontend on port `8000` and b
 cat src/main/resources/shardedURLs.txt | parallel -j 5 'ab -ql -n 2000 -c 1 -k {}' | grep 'Requests per second'
 ```
 
-## Analysing results
-TODO
+## Generating Flame Graphs
+You can generate Flame Graphs for specified Java PIDs (use `jps` to find out the PID) by executing [generate_flamegraph.sh](generate_flamegraph.sh) script.
