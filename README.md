@@ -5,7 +5,7 @@ This project serves as a playground for trying out monitoring options for both s
 The application itself is a simulation of [Conveyor Sorting Subsystem](http://i.imgur.com/mctb4HC.gifv) and its original code (without monitoring and using older Akka version) can be found in [akka-sharding-example repository](https://github.com/miciek/akka-sharding-example). 
 
 ## Building the application
-To build the application, use [build_docker.sh](build_docker.sh) script, which uses `sbt to build the fat jar and `docker-compose` to build the image.
+To build the application, use [build_docker.sh](build_docker.sh) script, which uses `sbt` to build the fat jar and `docker-compose` to build the image.
 
 ## Running the application
 This project uses [Prometheus](https://prometheus.io/) as monitoring solution. You can run both the application (single noded) and Prometheus using Docker Compose that is included in the project. Execute `docker-compose up` and go to `localhost:9090` to see Prometheus GUI.
@@ -18,6 +18,8 @@ We can generate lots of HTTP requests using these tools:
 - `haproxy` - fast and reliable http reverse proxy and load balancer,
 - provided [URLs.txt](src/main/resources/URLs.txt) for single-noded app,
 - provided [shardedURLs.txt](src/main/resources/shardedURLs.txt) and [haproxy.conf](src/main/resources/haproxy.conf).
+
+You can install these tools manually or using [install_load_tests_tools.sh](intall_load_tests_tools.sh) script.
 
 ### SingleNodedApp
 Just run `SingleNodedApp` from your IDE or `sbt runSingle` and then:

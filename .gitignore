@@ -8,6 +8,7 @@ target
 .DS_Store
 log
 *.log
+*.swp
 .cache
 journal
 snapshots
@@ -15,3 +16,4 @@ snapshots
 .ensime_cache
 .projectile
 lib_managed
+flamegraph
